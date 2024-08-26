@@ -7,6 +7,7 @@ const {
 	updateBook,
 	getBooks,
 } = require("../controllers/book.controller");
+const { authorize, protect } = require("../middleware/auth.middleware");
 
 router.get("/", getBooks);
 
@@ -16,12 +17,12 @@ router.get("/", getBooks);
     description: String
 }
  */
-router.post("/", createBook);
+router.post("/", protect, authorize("staff", "admin"), createBook);
 
 router.get("/:id", getBookByID);
 
-router.delete("/:id", deleteBook);
+router.delete("/:id", protect, authorize("staff", "admin"), deleteBook);
 
-router.patch("/:id", updateBook);
+router.patch("/:id", protect, authorize("staff", "admin"), updateBook);
 
 module.exports = router;

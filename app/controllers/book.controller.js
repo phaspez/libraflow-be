@@ -1,13 +1,26 @@
 const Book = require("../models/Book");
+const { upload } = require("../middleware/upload.middleware");
 
 const createBook = async (req, res, next) => {
-	try {
-		const book = new Book(req.body);
-		await book.save();
-		res.status(201).json(book);
-	} catch (error) {
-		next(error);
-	}
+	upload(req, res, async (err) => {
+		if (err) {
+			return res.status(400).json({ message: err });
+		}
+
+		try {
+			const bookData = {
+				...req.body,
+				coverImageUrl: req.file
+					? `/uploads/${req.file.filename}`
+					: null,
+			};
+			const book = new Book(bookData);
+			await book.save();
+			res.status(201).json(book);
+		} catch (error) {
+			next(error);
+		}
+	});
 };
 
 // get all books in the library, can filters with params
@@ -46,12 +59,14 @@ const getBooks = async (req, res, next) => {
 			.skip((page - 1) * limit)
 			.limit(parseInt(limit))
 			.populate("category")
-			.populate("publisher");
+			.populate("publisher")
+			.populate("author");
 
 		const booksWithPopulatedFields = books.map((book) => ({
 			...book.toObject(),
 			category: book.category,
 			publisher: book.publisher,
+			author: book.author,
 		}));
 		const totalBooks = await Book.countDocuments(query);
 
@@ -70,7 +85,8 @@ const getBookByID = async (req, res, next) => {
 	try {
 		const book = await Book.findById(req.params.id)
 			.populate("category")
-			.populate("publisher");
+			.populate("publisher")
+			.populate("author");
 		if (!book) {
 			return res.status(404).json({ message: "Book not found" });
 		}
@@ -78,6 +94,7 @@ const getBookByID = async (req, res, next) => {
 			...book.toObject(),
 			category: book.category,
 			publisher: book.publisher,
+			author: book.author,
 		});
 	} catch (error) {
 		next(error);

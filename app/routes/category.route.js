@@ -1,8 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { createCategory, deleteCategory, getCategories, getCategoryById, updateCategory } = require("../controllers/category.controller");
+const {
+	createCategory,
+	deleteCategory,
+	getCategories,
+	getCategoryById,
+	updateCategory,
+} = require("../controllers/category.controller");
+const { protect, authorize } = require("../middleware/auth.middleware");
 
-router.get('/', getCategories);
+router.get("/", getCategories);
 
 /*
 {
@@ -10,12 +17,12 @@ router.get('/', getCategories);
     description: String
 }
  */
-router.post('/', createCategory);
+router.post("/", protect, authorize("staff", "admin"), createCategory);
 
 router.get("/:id", getCategoryById);
 
-router.delete("/:id", deleteCategory);
+router.delete("/:id", protect, authorize("staff", "admin"), deleteCategory);
 
-router.patch("/:id", updateCategory);
+router.patch("/:id", protect, authorize("staff", "admin"), updateCategory);
 
 module.exports = router;

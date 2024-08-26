@@ -6,13 +6,24 @@ const {
 	getUserById,
 	getUsers,
 	updateUser,
+	loginUser,
+	getCurrentUser,
 } = require("../controllers/user.controller");
+const {
+	protect,
+	authorize,
+	authenticateToken,
+} = require("../middleware/auth.middleware");
 
-router.get("/", getUsers);
+router.get("/", protect, authorize("staff", "admin"), getUsers);
 
-router.post("/", createUser);
+router.post("/register", createUser);
 
-router.get(":/id", getUserById);
+router.post("/login", loginUser);
+
+router.get("/me", protect, getCurrentUser);
+
+router.get(":/id", protect, getUserById);
 
 router.patch("/:id", updateUser);
 
