@@ -2,6 +2,8 @@ const Publisher = require("../models/Publisher");
 
 // Create a new publisher
 const createPublisher = async (req, res, next) => {
+	const {} = req.query;
+
 	try {
 		const publisher = new Publisher(req.body);
 		await publisher.save();

@@ -10,6 +10,10 @@ const bookSchema = mongoose.Schema({
 		ref: "Author",
 		required: [true, "Please enter the author of the book"],
 	},
+	price: {
+		type: Number,
+		required: [true, "Please enter the price of the book"],
+	},
 	description: {
 		type: String,
 		required: false,

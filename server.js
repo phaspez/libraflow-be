@@ -18,7 +18,15 @@ const logger = require("morgan");
 connectDB();
 
 const corsOptions = {
-	origin: "http://localhost:5173",
+	// allow all ports from localhost
+	origin: function (origin, callback) {
+		const localhostRegex = /^http:\/\/localhost:\d+$/;
+		if (localhostRegex.test(origin) || !origin) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
 	credentials: true,
 };
 app.use(cors(corsOptions));
@@ -33,6 +41,8 @@ app.use("/api/publisher", require("./app/routes/publisher.route"));
 app.use("/api/user", require("./app/routes/user.route"));
 app.use("/api/book", require("./app/routes/book.route"));
 app.use("/api/author", require("./app/routes/author.route"));
+
+app.use("/api/admin/dashboard", require("./app/routes/dashboard.route"));
 
 app.use(errorMiddleware);
 
