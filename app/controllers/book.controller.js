@@ -41,17 +41,14 @@ const createBook = async (req, res, next) => {
 const getBooks = async (req, res, next) => {
 	const { page = 1, limit = 10 } = req.query;
 	const query = {};
-	if (req.query.category) {
-		query.category = { $in: req.query.category.split(",") };
-	}
 	if (req.query.publisher) {
 		query.publisher = req.query.publisher;
 	}
-	if (req.query.year) {
-		query.year = req.query.year;
-	}
 	if (req.query.title) {
 		query.title = { $regex: req.query.title, $options: "i" };
+	}
+	if (req.query.author) {
+		query.author = req.query.author;
 	}
 
 	try {
