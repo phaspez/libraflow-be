@@ -1,11 +1,16 @@
+//const User = require("../models/User");
+const Borrow = require("../models/Borrow");
 const User = require("../models/User");
 
-// Create a new user
-const createUser = async (req, res, next) => {
+const createBorrow = async (req, res, next) => {
 	try {
-		const user = new User(req.body);
-		await user.save();
-		res.status(201).json(user);
+		const { id } = req.body;
+		const borrow = new Borrow({
+			id: id,
+			user: req.user.id,
+		});
+		await borrow.save();
+		res.status(201).json(borrow);
 	} catch (error) {
 		next(error);
 	}

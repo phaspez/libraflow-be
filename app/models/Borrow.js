@@ -31,6 +31,11 @@ const borrowSchema = mongoose.Schema({
 		type: Boolean,
 		required: true,
 	},
+	// notes about this borrow
+	note: {
+		type: String,
+		required: false,
+	},
 });
 
 const Borrow = mongoose.model("Borrow", borrowSchema);
