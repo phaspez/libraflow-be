@@ -15,15 +15,15 @@ const {
 	authenticateToken,
 } = require("../middleware/auth.middleware");
 
-router.get("/", protect, authorize("staff", "admin"), getUsers);
-
 router.post("/register", createUser);
 
 router.post("/login", loginUser);
 
 router.get("/me", protect, getCurrentUser);
 
-router.get(":/id", protect, getUserById);
+router.get("/:id", protect, getUserById);
+
+router.get("/", protect, authorize("staff", "admin"), getUsers);
 
 router.patch("/:id", updateUser);
 

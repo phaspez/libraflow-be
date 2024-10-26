@@ -42,6 +42,7 @@ app.use("/api/user", require("./app/routes/user.route"));
 app.use("/api/book", require("./app/routes/book.route"));
 app.use("/api/author", require("./app/routes/author.route"));
 app.use("/api/cart", require("./app/routes/cart.route"));
+app.use("/api/borrow", require("./app/routes/borrow.route"));
 
 app.use("/api/admin/dashboard", require("./app/routes/dashboard.route"));
 
