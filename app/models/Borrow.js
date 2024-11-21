@@ -26,6 +26,12 @@ const borrowSchema = mongoose.Schema({
 		type: Date,
 		required: false,
 	},
+	// whether the user actually borrow the book or not
+	isAccepted: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
 	// whether the user has returned the book or not
 	isReturned: {
 		type: Boolean,
